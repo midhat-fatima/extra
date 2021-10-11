@@ -1,0 +1,57 @@
+<% 
+if(!locals.error){
+    locals.error = null;
+}
+%>
+	<div>
+        <form method="POST" action="http://localhost:3000/add">
+            <div>						
+                <h2 class="modal-title">Add New Task</h2>
+            </div>
+            <div>
+        		<label>Id : </label>
+            	<input type="number" name="id" class="form-control" required>
+            </div>			
+            <div>
+                <label>Task : </label>
+                <input type="text" name="item" class="form-control" required>
+            </div>			
+            <div>
+                <input type="submit" class="btn btn-success" value="Add">
+            </div>
+        </form>
+    </div>
+
+	<table>
+		<thead>
+			<tr>
+				<th><span>Id</span></th>
+				<th><span>TASK</span></th>
+			</tr>
+		</thead>
+		<tbody>
+			<% for(let user of locals.userData){ %>
+				<tr>
+					<td><%= user.id %></td>
+					<td><%= user.item %></td>
+					<td>
+						<button><a href="http://localhost:3000/delete/<%=user.id%>" class="delete">DELETE</a></button>
+					</td>
+				</tr>
+			<% } %>
+		</tbody>
+	</table>
+
+<script>
+	const socket = io("ws://localhost:3000");
+	  
+	socket.on("connect", () => {
+        // or with emit() and custom event names
+        socket.emit("greetings", "From client to server");
+	  });
+	  
+	socket.on("greetings", (data) => {
+        console.log(data);
+      });
+
+</script>
